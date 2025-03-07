@@ -40,6 +40,7 @@ public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_item")
     private Long idItem;
 
     /**
@@ -64,6 +65,7 @@ public class Item implements Serializable {
 
     @NotNull
     @DecimalMin(value = "0.01", message = "The price must be at least 0.01")
+    @Column(name = "unit_price")
     private float unitPrice;
 
     /**
@@ -71,6 +73,7 @@ public class Item implements Serializable {
      */
 
     @NotNull
+    @Column(name = "unit_stock")
     private int unitStock;
 
     /**

@@ -41,6 +41,7 @@ public class Purchase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_purchase")
     private Long idPurchase;
 
     /**
@@ -48,7 +49,7 @@ public class Purchase implements Serializable {
      */
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idClient", nullable = false)
+    @JoinColumn(name = "id_client", nullable = false)
     private Client idClient;
 
     /**
@@ -56,7 +57,7 @@ public class Purchase implements Serializable {
      */
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idItem", nullable = false)
+    @JoinColumn(name = "id_item", nullable = false)
     private Item idItem;
 
     /**
@@ -64,6 +65,7 @@ public class Purchase implements Serializable {
      */
 
     @NonNull
+    @Column(name = "purchase_date")
     private Date purchaseDate;
 
     /**
@@ -92,6 +94,7 @@ public class Purchase implements Serializable {
      */
 
     @NonNull
+    @Column(name = "total_iva")
     private BigDecimal totalIva;
 
     /**
@@ -99,6 +102,7 @@ public class Purchase implements Serializable {
      */
 
     @NonNull
+    @Column(name = "total_price")
     private BigDecimal totalPrice;
 
     /**

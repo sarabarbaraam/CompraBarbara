@@ -1,5 +1,6 @@
 package com.sarabarbara.compra.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -7,7 +8,7 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -42,6 +43,7 @@ public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_client")
     private Long idClient;
 
     /**
@@ -90,6 +92,7 @@ public class Client implements Serializable {
 
     @NonNull
     @Size(min = 5, max = 10, message = "The zipCode must be between 5 and 10 characters")
+    @Column(name = "zip_code")
     private String zipCode;
 
     /**
@@ -106,6 +109,7 @@ public class Client implements Serializable {
 
     @NonNull
     @Size(min = 9, max = 45, message = "The phoneNumber must be between 9 and 45 characters")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     /**
@@ -113,8 +117,10 @@ public class Client implements Serializable {
      */
 
     @NonNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Past(message = "The birth date must be in the past")
-    private Date birthDate;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
     /**
      * The equals
