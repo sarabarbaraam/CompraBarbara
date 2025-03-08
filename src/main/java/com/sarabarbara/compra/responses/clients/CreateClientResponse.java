@@ -1,6 +1,6 @@
-package com.sarabarbara.compra.responses;
+package com.sarabarbara.compra.responses.clients;
 
-import com.sarabarbara.compra.dto.ClientCreateDTO;
+import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import lombok.*;
 
 /**
@@ -20,9 +20,22 @@ import lombok.*;
 @EqualsAndHashCode
 public class CreateClientResponse {
 
+    /**
+     * The success
+     */
+
     private boolean success;
+
+    /**
+     * The clientCreate
+     */
 
     private ClientCreateDTO clientCreate;
 
+    /**
+     * The message
+     */
+
     private String message;
+
 }

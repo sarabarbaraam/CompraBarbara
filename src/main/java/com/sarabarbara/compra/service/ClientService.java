@@ -26,12 +26,29 @@ public class ClientService {
     private static final Logger logger = LoggerFactory.getLogger(ClientService.class);
     private ClientRepository clientRepository;
 
+    /**
+     * Method to create a client
+     *
+     * @param client the client's data
+     *
+     * @return the created client
+     */
+
     public Client createClient(Client client) {
 
         logger.info("Creating client...");
         logger.info("Client created successfully");
         return clientRepository.save(client);
     }
+
+    /**
+     * Method to get the list of all clients
+     *
+     * @param page the page to search
+     * @param size the size of the page
+     *
+     * @return the list of all clients
+     */
 
     public List<Client> clientList(int page, int size) {
 
@@ -45,6 +62,22 @@ public class ClientService {
         logger.info("Clients list: {}. ", clientList);
         return clientList;
     }
+
+    /**
+     * Method to search a client
+     *
+     * @param name        the name of the client
+     * @param surname     the surname of the client
+     * @param company     the company of the client
+     * @param position    the position of the client
+     * @param zipCode     the zip code of the client
+     * @param province    the province of the client
+     * @param phoneNumber the phone number of the client
+     * @param page        the page to search
+     * @param size        the size of the page
+     *
+     * @return the searched client
+     */
 
     public List<Client> searchClient(String name, String surname, String company, String position, String zipCode,
                                      String province, String phoneNumber, int page, int size) {

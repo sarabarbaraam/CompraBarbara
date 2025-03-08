@@ -1,10 +1,10 @@
 package com.sarabarbara.compra.controller;
 
-import com.sarabarbara.compra.dto.ClientCreateDTO;
-import com.sarabarbara.compra.dto.ClientSearchDTO;
+import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
+import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.model.Client;
-import com.sarabarbara.compra.responses.CreateClientResponse;
 import com.sarabarbara.compra.responses.SearchResponse;
+import com.sarabarbara.compra.responses.clients.CreateClientResponse;
 import com.sarabarbara.compra.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +37,14 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    /**
+     * The creation client controller
+     *
+     * @param client the client to create
+     *
+     * @return the created client
+     */
+
     @PostMapping("/create")
     public ResponseEntity<CreateClientResponse> createClient(@NotNull @Validated @RequestBody Client client) {
 
@@ -66,6 +74,15 @@ public class ClientController {
 
     }
 
+    /**
+     * The client list controller
+     *
+     * @param page the page
+     * @param size the size of the page
+     *
+     * @return the list of all clients
+     */
+
     @RequestMapping
     public ResponseEntity<SearchResponse<Client>> clientList(@RequestParam(defaultValue = "1") int page,
                                                              @RequestParam(defaultValue = "10") int size) {
@@ -87,6 +104,22 @@ public class ClientController {
                             e.getMessage()));
         }
     }
+
+    /**
+     * The search client controller
+     *
+     * @param name        the name of the client
+     * @param surname     the surname of the client
+     * @param company     the company of the client
+     * @param position    the position of the client
+     * @param zipCode     the zip code of the client
+     * @param province    the province of the client
+     * @param phoneNumber the phone number of the client
+     * @param page        the page
+     * @param size        the size of the page
+     *
+     * @return the searched client
+     */
 
     @GetMapping("/search")
     public ResponseEntity<SearchResponse<ClientSearchDTO>> searchClient(@RequestParam(required = false) String name,
@@ -138,5 +171,6 @@ public class ClientController {
                             e.getMessage()));
         }
     }
+
 
 }

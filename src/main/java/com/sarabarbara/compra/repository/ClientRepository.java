@@ -21,7 +21,30 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
+    /**
+     * Searches all the clients
+     *
+     * @param pageable the pageable
+     *
+     * @return the list of all clients
+     */
+
     @NotNull Page<Client> findAll(@NotNull Pageable pageable);
+
+    /**
+     * Searches a client by an only or many parameters
+     *
+     * @param name        the name of the client
+     * @param surname     the surname of the client
+     * @param company     the company of the client
+     * @param position    the position of the client
+     * @param zipCode     the zip code of the client
+     * @param province    the province of the client
+     * @param phoneNumber the phone number of the client
+     * @param pageable    the pageable
+     *
+     * @return the searched client
+     */
 
     // LIKE CONCAT('%', :param, '%') busca coincidencias parciales
     @Query("SELECT c FROM Client c WHERE " +

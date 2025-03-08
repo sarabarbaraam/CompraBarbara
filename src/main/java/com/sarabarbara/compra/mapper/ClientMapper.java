@@ -1,7 +1,7 @@
 package com.sarabarbara.compra.mapper;
 
-import com.sarabarbara.compra.dto.ClientCreateDTO;
-import com.sarabarbara.compra.dto.ClientSearchDTO;
+import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
+import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.model.Client;
 import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
@@ -20,9 +20,29 @@ import java.util.List;
 @Builder
 public class ClientMapper {
 
+    /**
+     * The private constructor
+     */
+
     private ClientMapper() {
 
     }
+
+    /**
+     * The Client to ClientCreateDTO mapper
+     *
+     * @param name        the name of the client
+     * @param surname     the surname of the client
+     * @param company     the company of the client
+     * @param position    the position of the client
+     * @param address     the address of the client
+     * @param zipCode     the zip code of the client
+     * @param province    the province of the client
+     * @param phoneNumber the phone number of the client
+     * @param birthDate   the birthdate of the client
+     *
+     * @return the ClientCreateDTO
+     */
 
     public static ClientCreateDTO toClientCreateDTOMapper(String name, String surname, String company, String position,
                                                           String address, String zipCode, String province,
@@ -40,6 +60,14 @@ public class ClientMapper {
                 .birthDate(birthDate)
                 .build();
     }
+
+    /**
+     * The Client to ClientSearchDTO mapper
+     *
+     * @param searchedClient the searched client
+     *
+     * @return the ClientSearchDTO
+     */
 
     public static List<ClientSearchDTO> toClientSearchDTOMapper(@NotNull List<Client> searchedClient) {
 

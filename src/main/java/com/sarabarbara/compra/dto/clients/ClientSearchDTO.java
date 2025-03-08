@@ -1,4 +1,4 @@
-package com.sarabarbara.compra.dto;
+package com.sarabarbara.compra.dto.clients;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
