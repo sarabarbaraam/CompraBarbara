@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.sarabarbara.compra.constants.Constants.CLIENT_NOT_FOUND;
+
 /**
  * ClientService class
  *
@@ -109,9 +111,11 @@ public class ClientService {
      * @param newInfo     the new info to be updated
      *
      * @return the updated client
+     *
+     * @throws ClientNotFoundException the {@link ClientNotFoundException}
      */
 
-    public Client updateClient(String phoneNumber, Client newInfo) {
+    public Client updateClient(String phoneNumber, Client newInfo) throws ClientNotFoundException {
 
         Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
 
@@ -143,6 +147,32 @@ public class ClientService {
 
         logger.error("User with phone number {} can't be updated: user not found", phoneNumber);
         throw new ClientNotFoundException("Can't update user: User not found");
+    }
+
+    /**
+     * Method to delete a client
+     *
+     * @param phoneNumber the phone number of the client
+     *
+     * @throws ClientNotFoundException the {@link ClientNotFoundException}
+     */
+
+    public void deleteUser(String phoneNumber) throws ClientNotFoundException {
+
+        Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
+
+        if (optionalClient.isEmpty()) {
+
+            logger.error(CLIENT_NOT_FOUND);
+            throw new ClientNotFoundException(CLIENT_NOT_FOUND);
+        }
+
+        Long id = optionalClient.get().getIdClient();
+
+        logger.info("Deleting client: {}", optionalClient);
+        clientRepository.deleteById(id);
+
+        logger.info("Client with id {} (phone number: {}) has been deleted successfully.", id, phoneNumber);
     }
 
 }

@@ -208,4 +208,32 @@ public class ClientController {
         }
     }
 
+    /**
+     * The Delete Controller
+     *
+     * @param phoneNumber the identifier
+     *
+     * @return a message
+     */
+
+    @DeleteMapping("/{phoneNumber}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable String phoneNumber) {
+
+        try {
+
+            logger.info("Deleting client started");
+
+            clientService.deleteUser(phoneNumber);
+
+            logger.info("Deleting user finished");
+            return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+
+        } catch (Exception e) {
+
+            logger.error("Can't delete user: Some internal error occurred. {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
 }
