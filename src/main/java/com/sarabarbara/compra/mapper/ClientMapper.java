@@ -2,6 +2,7 @@ package com.sarabarbara.compra.mapper;
 
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
+import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
 import com.sarabarbara.compra.model.Client;
 import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,29 @@ public class ClientMapper {
                         .birthDate(client.getBirthDate())
                         .build())
                 .toList();
+    }
+
+    /**
+     * The Client to ClientUpdateDTO mapper
+     *
+     * @param updateClient the client to be updated
+     *
+     * @return the ClientUpdateDTO
+     */
+
+    public static ClientUpdateDTO toClientUpdateDTOMapper(@NotNull Client updateClient) {
+
+        return ClientUpdateDTO.builder()
+                .name(updateClient.getName())
+                .surname(updateClient.getSurname())
+                .company(updateClient.getCompany())
+                .position(updateClient.getPosition())
+                .address(updateClient.getAddress())
+                .zipCode(updateClient.getZipCode())
+                .province(updateClient.getProvince())
+                .phoneNumber(updateClient.getPhoneNumber())
+                .birthDate(updateClient.getBirthDate())
+                .build();
     }
 
 }

@@ -2,9 +2,11 @@ package com.sarabarbara.compra.controller;
 
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
+import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.responses.SearchResponse;
 import com.sarabarbara.compra.responses.clients.CreateClientResponse;
+import com.sarabarbara.compra.responses.clients.UpdateClientResponse;
 import com.sarabarbara.compra.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.sarabarbara.compra.mapper.ClientMapper.toClientCreateDTOMapper;
-import static com.sarabarbara.compra.mapper.ClientMapper.toClientSearchDTOMapper;
+import static com.sarabarbara.compra.mapper.ClientMapper.*;
 
 /**
  * ClientController class
@@ -172,5 +173,39 @@ public class ClientController {
         }
     }
 
+    /**
+     * The update client controller
+     *
+     * @param phoneNumber the phoneNumber of the client to search for
+     * @param client      the client's data
+     *
+     * @return the updated client
+     */
+
+    @PatchMapping("/{phoneNumber}/update")
+    public ResponseEntity<UpdateClientResponse> updateClient(@PathVariable String phoneNumber,
+                                                             @RequestBody Client client) {
+
+        try {
+
+            logger.info("Updating user started");
+
+            Client updatedClient = clientService.updateClient(phoneNumber, client);
+
+            ClientUpdateDTO clientUpdateDTO = toClientUpdateDTOMapper(updatedClient);
+
+            logger.info("User updated successfully: {}", clientUpdateDTO);
+
+            logger.info("Updating user finished");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new UpdateClientResponse(true, clientUpdateDTO, "Client updated successfully"));
+
+        } catch (Exception e) {
+
+            logger.error("Can't update user: Some internal error occurred. {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new UpdateClientResponse(false, null, e.getMessage()));
+        }
+    }
 
 }

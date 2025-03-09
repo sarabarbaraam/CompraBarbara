@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * ClientRepository class
  *
@@ -65,5 +67,15 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             @Param("phoneNumber") String phoneNumber,
             @NotNull Pageable pageable
     );
+
+    /**
+     * Searched a client by the phone number
+     *
+     * @param phoneNumber the phone number of the client
+     *
+     * @return the client searched
+     */
+
+    Optional<Client> findByPhoneNumber(@NotNull String phoneNumber);
 
 }

@@ -1,8 +1,10 @@
 package com.sarabarbara.compra.service;
 
+import com.sarabarbara.compra.exceptions.ClientNotFoundException;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.repository.ClientRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ClientService class
@@ -25,6 +28,7 @@ public class ClientService {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientService.class);
     private ClientRepository clientRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     /**
      * Method to create a client
@@ -96,6 +100,49 @@ public class ClientService {
         logger.info("Clients found: {}", searchedClient.getContent());
         return searchedClient.getContent();
 
+    }
+
+    /**
+     * Method to update client's data
+     *
+     * @param phoneNumber the phone number of the client
+     * @param newInfo     the new info to be updated
+     *
+     * @return the updated client
+     */
+
+    public Client updateClient(String phoneNumber, Client newInfo) {
+
+        Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
+
+        logger.info("Updating user: {}", optionalClient);
+
+        if (optionalClient.isPresent()) {
+
+            Client existingClient = optionalClient.get();
+
+            logger.info("New user info: {}", newInfo);
+
+            // ignores the id field
+            modelMapper.typeMap(Client.class, Client.class).addMappings(mapper -> mapper.skip(Client::setIdClient));
+
+            // ignores the null fields
+            modelMapper.getConfiguration().setSkipNullEnabled(true);
+
+            /* copies the values of the Client object (newInfo, any non-null field)
+            to the existingClient object. */
+            modelMapper.map(newInfo, existingClient);
+
+            logger.info("Updating user {} {}...", existingClient.getName(), existingClient.getSurname());
+            clientRepository.save(existingClient);
+
+
+            logger.info("User {} updated successfully", existingClient);
+            return existingClient;
+        }
+
+        logger.error("User with phone number {} can't be updated: user not found", phoneNumber);
+        throw new ClientNotFoundException("Can't update user: User not found");
     }
 
 }
