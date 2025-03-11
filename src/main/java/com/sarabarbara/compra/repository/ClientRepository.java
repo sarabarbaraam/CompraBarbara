@@ -86,6 +86,16 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
      * @return the client with the id to search
      */
 
-    Optional<Client> findById(@NotNull Long idClient);
+    @NotNull Optional<Client> findById(@NotNull Long idClient);
+
+    /**
+     * Searches a client by the id
+     *
+     * @param company the id of the client
+     *
+     * @return the client with the id to search
+     */
+
+    @NotNull Optional<Client> findByCompany(@NotNull String company);
 
 }

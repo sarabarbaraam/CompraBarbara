@@ -3,8 +3,10 @@ package com.sarabarbara.compra.controller;
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
+import com.sarabarbara.compra.exceptions.ClientValidateException;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.responses.SearchResponse;
+import com.sarabarbara.compra.responses.clients.ClientSheetResponse;
 import com.sarabarbara.compra.responses.clients.CreateClientResponse;
 import com.sarabarbara.compra.responses.clients.UpdateClientResponse;
 import com.sarabarbara.compra.service.ClientService;
@@ -66,6 +68,13 @@ public class ClientController {
             logger.info("Client created successfully: {}", createClientDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new CreateClientResponse(true, createClientDTO,
                     "Client created successfully"));
+        } catch (ClientValidateException cv) {
+
+            logger.error("Can't create the client: A conflict had occurred {}", cv.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new CreateClientResponse(false, null,
+                            cv.getMessage()));
+
         } catch (Exception e) {
 
             logger.error("Can't create the client: Some internal error occurred {}", e.getMessage());
@@ -181,16 +190,27 @@ public class ClientController {
      */
 
     @GetMapping("/profile/{idClient}")
-    public ResponseEntity<ClientSheet> clientSheet(@PathVariable Long idClient) {
+    public ResponseEntity<ClientSheetResponse> clientSheet(@PathVariable Long idClient) {
 
-        logger.info("ClientSheet started");
+        try {
 
-        Client client = clientService.clientSheet(idClient);
+            logger.info("ClientSheet started");
 
-        ClientSheet clientSheet = toClientSheetMapper(client);
+            Client client = clientService.clientSheet(idClient);
 
-        logger.info("Client sheet for id {}: {}", idClient, clientSheet);
-        return ResponseEntity.status(HttpStatus.OK).body(clientSheet);
+            ClientSheet clientSheet = toClientSheetMapper(client);
+
+            logger.info("Client sheet for id {}: {}", idClient, clientSheet);
+            return ResponseEntity.status(HttpStatus.OK).body(new ClientSheetResponse(true, clientSheet,
+                    "Successfully"));
+
+        } catch (Exception e) {
+
+            logger.error("Can't load client's sheet: Some internal error occurred. {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ClientSheetResponse(false, null, e.getMessage()));
+
+        }
 
     }
 

@@ -1,9 +1,11 @@
 package com.sarabarbara.compra.service;
 
 import com.sarabarbara.compra.exceptions.ClientNotFoundException;
+import com.sarabarbara.compra.exceptions.ClientValidateException;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.repository.ClientRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.sarabarbara.compra.constants.Constants.CLIENT_NOT_FOUND;
 
 /**
  * ClientService class
@@ -38,11 +38,15 @@ public class ClientService {
      * @param client the client's data
      *
      * @return the created client
+     *
+     * @throws ClientValidateException the {@link ClientValidateException}
      */
 
-    public Client createClient(Client client) {
+    public Client createClient(Client client) throws ClientValidateException {
 
         logger.info("Creating client...");
+        validateNewClient(client);
+
         logger.info("Client created successfully");
         return clientRepository.save(client);
     }
@@ -117,36 +121,29 @@ public class ClientService {
 
     public Client updateClient(String phoneNumber, Client newInfo) throws ClientNotFoundException {
 
-        Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
+        logger.info("Updating client with telephone number {}", phoneNumber);
+        Client optionalClient = clientRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new ClientNotFoundException("Can't update user: User not found"));
 
-        logger.info("Updating user: {}", optionalClient);
+        logger.info("New user info: {}", newInfo);
 
-        if (optionalClient.isPresent()) {
+        // ignores the id field
+        modelMapper.typeMap(Client.class, Client.class).addMappings(mapper -> mapper.skip(Client::setIdClient));
 
-            Client existingClient = optionalClient.get();
+        // ignores the null fields
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
 
-            logger.info("New user info: {}", newInfo);
+        /* copies the values of the Client object (newInfo, any non-null field)
+        to the existingClient object. */
 
-            // ignores the id field
-            modelMapper.typeMap(Client.class, Client.class).addMappings(mapper -> mapper.skip(Client::setIdClient));
+        modelMapper.map(newInfo, optionalClient);
 
-            // ignores the null fields
-            modelMapper.getConfiguration().setSkipNullEnabled(true);
-
-            /* copies the values of the Client object (newInfo, any non-null field)
-            to the existingClient object. */
-            modelMapper.map(newInfo, existingClient);
-
-            logger.info("Updating user {} {}...", existingClient.getName(), existingClient.getSurname());
-            clientRepository.save(existingClient);
+        logger.info("Updating user {} {}...", optionalClient.getName(), optionalClient.getSurname());
+        clientRepository.save(optionalClient);
 
 
-            logger.info("User {} updated successfully", existingClient);
-            return existingClient;
-        }
-
-        logger.error("User with phone number {} can't be updated: user not found", phoneNumber);
-        throw new ClientNotFoundException("Can't update user: User not found");
+        logger.info("User {} updated successfully", optionalClient);
+        return optionalClient;
     }
 
     /**
@@ -159,15 +156,10 @@ public class ClientService {
 
     public void deleteUser(String phoneNumber) throws ClientNotFoundException {
 
-        Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
+        Client optionalClient = clientRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new ClientNotFoundException("Can't update user: User not found"));
 
-        if (optionalClient.isEmpty()) {
-
-            logger.error(CLIENT_NOT_FOUND);
-            throw new ClientNotFoundException(CLIENT_NOT_FOUND);
-        }
-
-        Long id = optionalClient.get().getIdClient();
+        Long id = optionalClient.getIdClient();
 
         logger.info("Deleting client: {}", optionalClient);
         clientRepository.deleteById(id);
@@ -192,6 +184,40 @@ public class ClientService {
 
         return client.orElse(null);
 
+    }
+
+    // Complementary methods
+
+    /**
+     * Validate the info of new client is correct
+     *
+     * @param client the client
+     */
+
+    private void validateNewClient(@NonNull Client client) {
+
+        logger.info("Validating client...");
+        usernameValidator(client.getCompany());
+    }
+
+    /**
+     * Validates if the company is taken
+     *
+     * @param company the username
+     */
+
+    private void usernameValidator(String company) {
+
+        Client optionalCompany = clientRepository.findByCompany(company)
+                .orElseThrow(() -> new ClientValidateException(""));
+
+        if (optionalCompany.getCompany().equals(company)) {
+
+            logger.error("The company {} is already taken.", company);
+            throw new ClientValidateException("The company " + company + " is already taken.");
+        }
+
+        logger.info("The company {} is available", company);
     }
 
 }

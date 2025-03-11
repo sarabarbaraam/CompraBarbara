@@ -105,6 +105,14 @@ public class ClientMapper {
                 .build();
     }
 
+    /**
+     * The Client to ClientSheet Mapper
+     *
+     * @param client the client
+     *
+     * @return the sheet of the client
+     */
+
     public static ClientSheet toClientSheetMapper(@NotNull Client client) {
 
         return ClientSheet.builder()
