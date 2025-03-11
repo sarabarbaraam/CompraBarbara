@@ -69,7 +69,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     );
 
     /**
-     * Searched a client by the phone number
+     * Searches a client by the phone number
      *
      * @param phoneNumber the phone number of the client
      *
@@ -77,5 +77,15 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
      */
 
     Optional<Client> findByPhoneNumber(@NotNull String phoneNumber);
+
+    /**
+     * Searches a client by the id
+     *
+     * @param idClient the id of the client
+     *
+     * @return the client with the id to search
+     */
+
+    Optional<Client> findById(@NotNull Long idClient);
 
 }

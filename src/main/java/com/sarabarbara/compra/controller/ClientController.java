@@ -8,6 +8,7 @@ import com.sarabarbara.compra.responses.SearchResponse;
 import com.sarabarbara.compra.responses.clients.CreateClientResponse;
 import com.sarabarbara.compra.responses.clients.UpdateClientResponse;
 import com.sarabarbara.compra.service.ClientService;
+import com.sarabarbara.compra.sheets.ClientSheet;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -156,10 +157,8 @@ public class ClientController {
                     clientSearchDTO, searchedClient.size(), page, totalPage, "Successfully");
 
             logger.info("Clients found:");
-            clientSearchDTO.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}, " +
-                            "position: {}, zipCode: {}, province: {}, phoneNumber: {}",
-                    client.getName(), client.getSurname(), client.getCompany(), client.getPosition(),
-                    client.getZipCode(), client.getProvince(), client.getPhoneNumber()));
+            clientSearchDTO.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",
+                    client.getName(), client.getSurname(), client.getCompany()));
 
             logger.info("Searching user finished");
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -171,6 +170,28 @@ public class ClientController {
                     .body(new SearchResponse<>(null, 0, 0, 0,
                             e.getMessage()));
         }
+    }
+
+    /**
+     * The  client sheet controller
+     *
+     * @param idClient the id of the client
+     *
+     * @return the sheet of the client
+     */
+
+    @GetMapping("/profile/{idClient}")
+    public ResponseEntity<ClientSheet> clientSheet(@PathVariable Long idClient) {
+
+        logger.info("ClientSheet started");
+
+        Client client = clientService.clientSheet(idClient);
+
+        ClientSheet clientSheet = toClientSheetMapper(client);
+
+        logger.info("Client sheet for id {}: {}", idClient, clientSheet);
+        return ResponseEntity.status(HttpStatus.OK).body(clientSheet);
+
     }
 
     /**

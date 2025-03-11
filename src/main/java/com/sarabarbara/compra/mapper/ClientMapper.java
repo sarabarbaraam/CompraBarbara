@@ -4,6 +4,7 @@ import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
 import com.sarabarbara.compra.model.Client;
+import com.sarabarbara.compra.sheets.ClientSheet;
 import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
 
@@ -77,12 +78,6 @@ public class ClientMapper {
                         .name(client.getName())
                         .surname(client.getSurname())
                         .company(client.getCompany())
-                        .position(client.getPosition())
-                        .address(client.getAddress())
-                        .zipCode(client.getZipCode())
-                        .province(client.getProvince())
-                        .phoneNumber(client.getPhoneNumber())
-                        .birthDate(client.getBirthDate())
                         .build())
                 .toList();
     }
@@ -107,6 +102,21 @@ public class ClientMapper {
                 .province(updateClient.getProvince())
                 .phoneNumber(updateClient.getPhoneNumber())
                 .birthDate(updateClient.getBirthDate())
+                .build();
+    }
+
+    public static ClientSheet toClientSheetMapper(@NotNull Client client) {
+
+        return ClientSheet.builder()
+                .name(client.getName())
+                .surname(client.getSurname())
+                .company(client.getCompany())
+                .position(client.getPosition())
+                .address(client.getAddress())
+                .zipCode(client.getZipCode())
+                .province(client.getProvince())
+                .phoneNumber(client.getPhoneNumber())
+                .birthDate(client.getBirthDate())
                 .build();
     }
 

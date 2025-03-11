@@ -175,4 +175,23 @@ public class ClientService {
         logger.info("Client with id {} (phone number: {}) has been deleted successfully.", id, phoneNumber);
     }
 
+    /**
+     * Method to see the sheet of the client
+     * In this method it searched the id of the client to see their sheet
+     *
+     * @param idClient the id of the client
+     *
+     * @return the id of the client
+     */
+
+    public Client clientSheet(Long idClient) {
+
+        logger.info("Client sheet for id {}", idClient);
+
+        Optional<Client> client = clientRepository.findById(idClient);
+
+        return client.orElse(null);
+
+    }
+
 }
