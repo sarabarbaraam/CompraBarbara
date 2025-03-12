@@ -1,7 +1,7 @@
 package com.sarabarbara.compra.service;
 
-import com.sarabarbara.compra.exceptions.ClientNotFoundException;
-import com.sarabarbara.compra.exceptions.ClientValidateException;
+import com.sarabarbara.compra.exceptions.client.ClientNotFoundException;
+import com.sarabarbara.compra.exceptions.client.ClientValidateException;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.repository.ClientRepository;
 import lombok.AllArgsConstructor;
@@ -123,9 +123,9 @@ public class ClientService {
 
         logger.info("Updating client with telephone number {}", phoneNumber);
         Client optionalClient = clientRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new ClientNotFoundException("Can't update user: User not found"));
+                .orElseThrow(() -> new ClientNotFoundException("Can't update client: Client not found"));
 
-        logger.info("New user info: {}", newInfo);
+        logger.info("New client info: {}", newInfo);
 
         // ignores the id field
         modelMapper.typeMap(Client.class, Client.class).addMappings(mapper -> mapper.skip(Client::setIdClient));
@@ -138,11 +138,11 @@ public class ClientService {
 
         modelMapper.map(newInfo, optionalClient);
 
-        logger.info("Updating user {} {}...", optionalClient.getName(), optionalClient.getSurname());
+        logger.info("Updating client {} {}...", optionalClient.getName(), optionalClient.getSurname());
         clientRepository.save(optionalClient);
 
 
-        logger.info("User {} updated successfully", optionalClient);
+        logger.info("Client {} updated successfully", optionalClient);
         return optionalClient;
     }
 
@@ -154,10 +154,10 @@ public class ClientService {
      * @throws ClientNotFoundException the {@link ClientNotFoundException}
      */
 
-    public void deleteUser(String phoneNumber) throws ClientNotFoundException {
+    public void deleteClient(String phoneNumber) throws ClientNotFoundException {
 
         Client optionalClient = clientRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new ClientNotFoundException("Can't update user: User not found"));
+                .orElseThrow(() -> new ClientNotFoundException("Can't update client: Client not found"));
 
         Long id = optionalClient.getIdClient();
 
@@ -197,16 +197,16 @@ public class ClientService {
     private void validateNewClient(@NonNull Client client) {
 
         logger.info("Validating client...");
-        usernameValidator(client.getCompany());
+        companyValidator(client.getCompany());
     }
 
     /**
      * Validates if the company is taken
      *
-     * @param company the username
+     * @param company the company
      */
 
-    private void usernameValidator(String company) {
+    private void companyValidator(String company) {
 
         Client optionalCompany = clientRepository.findByCompany(company)
                 .orElseThrow(() -> new ClientValidateException(""));

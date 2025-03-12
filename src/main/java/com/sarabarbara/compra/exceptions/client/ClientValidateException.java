@@ -1,4 +1,4 @@
-package com.sarabarbara.compra.exceptions;
+package com.sarabarbara.compra.exceptions.client;
 
 public class ClientValidateException extends RuntimeException {
 

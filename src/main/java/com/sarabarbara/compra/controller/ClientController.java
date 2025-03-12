@@ -3,7 +3,7 @@ package com.sarabarbara.compra.controller;
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
-import com.sarabarbara.compra.exceptions.ClientValidateException;
+import com.sarabarbara.compra.exceptions.client.ClientValidateException;
 import com.sarabarbara.compra.model.Client;
 import com.sarabarbara.compra.responses.SearchResponse;
 import com.sarabarbara.compra.responses.clients.ClientSheetResponse;
@@ -179,12 +179,12 @@ public class ClientController {
             clientSearchDTO.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",
                     client.getName(), client.getSurname(), client.getCompany()));
 
-            logger.info("Searching user finished");
+            logger.info("Searching client finished");
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (Exception e) {
 
-            logger.error("Can't search user: Some internal error occurred. {}", e.getMessage());
+            logger.error("Can't search client: Some internal error occurred. {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new SearchResponse<>(null, 0, 0, 0,
                             e.getMessage()));
@@ -239,21 +239,21 @@ public class ClientController {
 
         try {
 
-            logger.info("Updating user started");
+            logger.info("Updating client started");
 
             Client updatedClient = clientService.updateClient(phoneNumber, client);
 
             ClientUpdateDTO clientUpdateDTO = toClientUpdateDTOMapper(updatedClient);
 
-            logger.info("User updated successfully: {}", clientUpdateDTO);
+            logger.info("Client updated successfully: {}", clientUpdateDTO);
 
-            logger.info("Updating user finished");
+            logger.info("Updating client finished");
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new UpdateClientResponse(true, clientUpdateDTO, "Client updated successfully"));
 
         } catch (Exception e) {
 
-            logger.error("Can't update user: Some internal error occurred. {}", e.getMessage());
+            logger.error("Can't update client: Some internal error occurred. {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new UpdateClientResponse(false, null, e.getMessage()));
         }
@@ -268,20 +268,20 @@ public class ClientController {
      */
 
     @DeleteMapping("/{phoneNumber}/delete")
-    public ResponseEntity<String> deleteUser(@PathVariable String phoneNumber) {
+    public ResponseEntity<String> deleteClient(@PathVariable String phoneNumber) {
 
         try {
 
             logger.info("Deleting client started");
 
-            clientService.deleteUser(phoneNumber);
+            clientService.deleteClient(phoneNumber);
 
-            logger.info("Deleting user finished");
-            return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+            logger.info("Deleting client finished");
+            return ResponseEntity.status(HttpStatus.OK).body("Client deleted successfully");
 
         } catch (Exception e) {
 
-            logger.error("Can't delete user: Some internal error occurred. {}", e.getMessage());
+            logger.error("Can't delete client: Some internal error occurred. {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }

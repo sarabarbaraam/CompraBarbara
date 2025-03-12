@@ -26,10 +26,10 @@ public class UpdateClientResponse {
     private boolean success;
 
     /**
-     * The user
+     * The clientUpdate
      */
 
-    private ClientUpdateDTO user;
+    private ClientUpdateDTO clientUpdate;
 
     /**
      * The message
