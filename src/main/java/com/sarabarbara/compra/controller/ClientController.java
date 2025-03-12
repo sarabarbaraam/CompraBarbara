@@ -94,7 +94,7 @@ public class ClientController {
      * @return the list of all clients
      */
 
-    @RequestMapping
+    @GetMapping
     public ResponseEntity<SearchResponse<Client>> clientList(@RequestParam(defaultValue = "1") int page,
                                                              @RequestParam(defaultValue = "10") int size) {
 
@@ -103,6 +103,16 @@ public class ClientController {
 
             List<Client> clientList = clientService.clientList(page - 1, size);
             int totalPages = (int) Math.ceil((double) clientList.size() / size);
+
+            if (clientList.isEmpty()) {
+
+                logger.info("Client list finished without content");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+
+            logger.info("List of clients:");
+            clientList.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",
+                    client.getName(), client.getSurname(), client.getCompany()));
 
             return ResponseEntity.status(HttpStatus.OK).body(new SearchResponse<>(
                     clientList, clientList.size(), page, totalPages, "Successful"));
