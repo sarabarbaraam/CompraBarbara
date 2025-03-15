@@ -1,6 +1,7 @@
 package com.sarabarbara.compra.mapper;
 
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
+import com.sarabarbara.compra.dto.clients.ClientDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
 import com.sarabarbara.compra.model.Client;
@@ -61,6 +62,32 @@ public class ClientMapper {
                 .phoneNumber(phoneNumber)
                 .birthDate(birthDate)
                 .build();
+    }
+
+    /**
+     * The Client to ClientDTO Mapper
+     *
+     * @param clientList the client list
+     *
+     * @return the ClientDTO
+     */
+
+    public static List<ClientDTO> toClientDTOMapper(@NotNull List<Client> clientList) {
+
+        return clientList.stream()
+                .map(client -> ClientDTO.builder()
+                        .idClient(client.getIdClient())
+                        .name(client.getName())
+                        .surname(client.getSurname())
+                        .company(client.getCompany())
+                        .position(client.getPosition())
+                        .address(client.getAddress())
+                        .zipCode(client.getZipCode())
+                        .province(client.getProvince())
+                        .phoneNumber(client.getPhoneNumber())
+                        .birthDate(client.getBirthDate())
+                        .build())
+                .toList();
     }
 
     /**

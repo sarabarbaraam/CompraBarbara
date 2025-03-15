@@ -208,10 +208,9 @@ public class ClientService {
 
     private void companyValidator(String company) {
 
-        Client optionalCompany = clientRepository.findByCompany(company)
-                .orElseThrow(() -> new ClientValidateException(""));
+        Optional<Client> optionalCompany = clientRepository.findByCompany(company);
 
-        if (optionalCompany.getCompany().equals(company)) {
+        if (optionalCompany.isPresent()) {
 
             logger.error("The company {} is already taken.", company);
             throw new ClientValidateException("The company " + company + " is already taken.");
@@ -219,5 +218,6 @@ public class ClientService {
 
         logger.info("The company {} is available", company);
     }
+
 
 }

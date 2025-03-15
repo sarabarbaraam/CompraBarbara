@@ -1,28 +1,26 @@
-package com.sarabarbara.compra.model;
+package com.sarabarbara.compra.dto.items;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sarabarbara.compra.enums.Type;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
- * Item class
+ * ItemCreateDTO class
  *
  * @author sarabarbaraam
  * @version 1.0
- * @since 06/03/2025
+ * @since 12/03/2025
  */
 
-@Entity
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -30,20 +28,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@Table(name = "item")
-public class Item implements Serializable {
-
-    /**
-     * The serialVersionUID
-     */
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_item")
-    private Long idItem;
+@EqualsAndHashCode
+public class ItemCreateDTO {
 
     /**
      * The name;
@@ -79,7 +65,7 @@ public class Item implements Serializable {
     private int itemStock;
 
     /**
-     * The type;
+     * The name;
      */
 
     @NonNull
@@ -102,38 +88,5 @@ public class Item implements Serializable {
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate date;
-
-    /**
-     * The equals
-     *
-     * @param o the o
-     *
-     * @return the equals
-     */
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Item item)) return false;
-        return Float.compare(getUnitPrice(), item.getUnitPrice()) == 0
-                && getItemStock() == item.getItemStock()
-                && Objects.equals(getIdItem(), item.getIdItem())
-                && Objects.equals(getName(), item.getName())
-                && Objects.equals(getDescription(), item.getDescription())
-                && getType() == item.getType()
-                && Objects.equals(getSupplier(), item.getSupplier())
-                && Objects.equals(getDate(), item.getDate());
-    }
-
-    /**
-     * The hashcode
-     *
-     * @return the hash
-     */
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getIdItem(), getName(), getDescription(), getUnitPrice(), getItemStock(), getType(),
-                getSupplier(), getDate());
-    }
 
 }

@@ -1,6 +1,7 @@
 package com.sarabarbara.compra.controller;
 
 import com.sarabarbara.compra.dto.clients.ClientCreateDTO;
+import com.sarabarbara.compra.dto.clients.ClientDTO;
 import com.sarabarbara.compra.dto.clients.ClientSearchDTO;
 import com.sarabarbara.compra.dto.clients.ClientUpdateDTO;
 import com.sarabarbara.compra.exceptions.client.ClientValidateException;
@@ -95,8 +96,8 @@ public class ClientController {
      */
 
     @GetMapping
-    public ResponseEntity<SearchResponse<Client>> clientList(@RequestParam(defaultValue = "1") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<SearchResponse<ClientDTO>> clientList(@RequestParam(defaultValue = "1") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
 
         try {
             logger.info("List of clients started");
@@ -110,12 +111,14 @@ public class ClientController {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
 
+            List<ClientDTO> clientDTO = toClientDTOMapper(clientList);
+
             logger.info("List of clients:");
-            clientList.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",
+            clientDTO.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",
                     client.getName(), client.getSurname(), client.getCompany()));
 
             return ResponseEntity.status(HttpStatus.OK).body(new SearchResponse<>(
-                    clientList, clientList.size(), page, totalPages, "Successful"));
+                    clientDTO, clientDTO.size(), page, totalPages, "Successful"));
 
         } catch (Exception e) {
 
