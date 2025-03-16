@@ -32,6 +32,30 @@ public class ClientMapper {
     }
 
     /**
+     * The Client to ClientDTO Mapper
+     *
+     * @param client the client
+     *
+     * @return the clientDTO
+     */
+
+    public static ClientDTO toClientDTOMapper(@NotNull Client client) {
+
+        return ClientDTO.builder()
+                .idClient(client.getIdClient())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .company(client.getCompany())
+                .position(client.getPosition())
+                .address(client.getAddress())
+                .zipCode(client.getZipCode())
+                .province(client.getProvince())
+                .phoneNumber(client.getPhoneNumber())
+                .birthDate(client.getBirthDate())
+                .build();
+    }
+
+    /**
      * The Client to ClientCreateDTO mapper
      *
      * @param name        the name of the client
@@ -72,7 +96,7 @@ public class ClientMapper {
      * @return the ClientDTO
      */
 
-    public static List<ClientDTO> toClientDTOMapper(@NotNull List<Client> clientList) {
+    public static List<ClientDTO> toClientDTOListMapper(@NotNull List<Client> clientList) {
 
         return clientList.stream()
                 .map(client -> ClientDTO.builder()
@@ -110,29 +134,6 @@ public class ClientMapper {
     }
 
     /**
-     * The Client to ClientUpdateDTO mapper
-     *
-     * @param updateClient the client to be updated
-     *
-     * @return the ClientUpdateDTO
-     */
-
-    public static ClientUpdateDTO toClientUpdateDTOMapper(@NotNull Client updateClient) {
-
-        return ClientUpdateDTO.builder()
-                .name(updateClient.getName())
-                .surname(updateClient.getSurname())
-                .company(updateClient.getCompany())
-                .position(updateClient.getPosition())
-                .address(updateClient.getAddress())
-                .zipCode(updateClient.getZipCode())
-                .province(updateClient.getProvince())
-                .phoneNumber(updateClient.getPhoneNumber())
-                .birthDate(updateClient.getBirthDate())
-                .build();
-    }
-
-    /**
      * The Client to ClientSheet Mapper
      *
      * @param client the client
@@ -152,6 +153,30 @@ public class ClientMapper {
                 .province(client.getProvince())
                 .phoneNumber(client.getPhoneNumber())
                 .birthDate(client.getBirthDate())
+                //.purchases(client)
+                .build();
+    }
+
+    /**
+     * The Client to ClientUpdateDTO mapper
+     *
+     * @param updateClient the client to be updated
+     *
+     * @return the ClientUpdateDTO
+     */
+
+    public static ClientUpdateDTO toClientUpdateDTOMapper(@NotNull Client updateClient) {
+
+        return ClientUpdateDTO.builder()
+                .name(updateClient.getName())
+                .surname(updateClient.getSurname())
+                .company(updateClient.getCompany())
+                .position(updateClient.getPosition())
+                .address(updateClient.getAddress())
+                .zipCode(updateClient.getZipCode())
+                .province(updateClient.getProvince())
+                .phoneNumber(updateClient.getPhoneNumber())
+                .birthDate(updateClient.getBirthDate())
                 .build();
     }
 

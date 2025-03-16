@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -48,7 +49,7 @@ public class ItemUpdateDTO {
 
     @DecimalMin(value = "0.01", message = "The price must be at least 0.01")
     @Column(name = "unit_price")
-    private float unitPrice;
+    private BigDecimal unitPrice;
 
     /**
      * The unitStock;

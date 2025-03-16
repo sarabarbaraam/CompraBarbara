@@ -1,11 +1,6 @@
 package com.sarabarbara.compra.dto.clients;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -28,9 +23,10 @@ import java.time.LocalDate;
 @ToString
 public class ClientDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_client")
+    /**
+     * The idClient
+     */
+
     private Long idClient;
 
     /**
@@ -73,7 +69,6 @@ public class ClientDTO {
      */
 
     @Size(min = 5, max = 10, message = "The zipCode must be between 5 and 10 characters")
-    @Column(name = "zip_code")
     private String zipCode;
 
     /**
@@ -88,7 +83,6 @@ public class ClientDTO {
      */
 
     @Size(min = 9, max = 45, message = "The phoneNumber must be between 9 and 45 characters")
-    @Column(name = "phone_number")
     private String phoneNumber;
 
     /**
@@ -96,8 +90,6 @@ public class ClientDTO {
      */
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    @Past(message = "The birth date must be in the past")
-    @Column(name = "birth_date")
     private LocalDate birthDate;
 
 }

@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -40,13 +41,17 @@ public class Item implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The idItem
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_item")
     private Long idItem;
 
     /**
-     * The name;
+     * The name
      */
 
     @NonNull
@@ -54,7 +59,7 @@ public class Item implements Serializable {
     private String name;
 
     /**
-     * The description;
+     * The description
      */
 
     @NonNull
@@ -62,16 +67,16 @@ public class Item implements Serializable {
     private String description;
 
     /**
-     * The unitPrice;
+     * The unitPrice
      */
 
     @NotNull
     @DecimalMin(value = "0.01", message = "The price must be at least 0.01")
     @Column(name = "unit_price")
-    private float unitPrice;
+    private BigDecimal unitPrice;
 
     /**
-     * The unitStock;
+     * The unitStock
      */
 
     @NotNull
@@ -79,7 +84,7 @@ public class Item implements Serializable {
     private int itemStock;
 
     /**
-     * The type;
+     * The type
      */
 
     @NonNull
@@ -87,7 +92,7 @@ public class Item implements Serializable {
     private Type type;
 
     /**
-     * The supplier;
+     * The supplier
      */
 
     @NonNull
@@ -95,7 +100,7 @@ public class Item implements Serializable {
     private String supplier;
 
     /**
-     * The date;
+     * The date
      */
 
     @NonNull
@@ -114,13 +119,12 @@ public class Item implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Item item)) return false;
-        return Float.compare(getUnitPrice(), item.getUnitPrice()) == 0
-                && getItemStock() == item.getItemStock()
+        return getItemStock() == item.getItemStock()
                 && Objects.equals(getIdItem(), item.getIdItem())
                 && Objects.equals(getName(), item.getName())
                 && Objects.equals(getDescription(), item.getDescription())
-                && getType() == item.getType()
-                && Objects.equals(getSupplier(), item.getSupplier())
+                && Objects.equals(getUnitPrice(), item.getUnitPrice())
+                && getType() == item.getType() && Objects.equals(getSupplier(), item.getSupplier())
                 && Objects.equals(getDate(), item.getDate());
     }
 

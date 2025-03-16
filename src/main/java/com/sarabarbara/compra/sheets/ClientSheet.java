@@ -1,6 +1,7 @@
 package com.sarabarbara.compra.sheets;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sarabarbara.compra.dto.clients.ClientPurchaseDTO;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -90,5 +91,7 @@ public class ClientSheet {
     @Past(message = "The birth date must be in the past")
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    private ClientPurchaseDTO purchases;
 
 }

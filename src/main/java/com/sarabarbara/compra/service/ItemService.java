@@ -65,7 +65,7 @@ public class ItemService {
 
     public List<Item> itemList(int page, int size) {
 
-        logger.info("Client list. Page {}, size {}", page, size);
+        logger.info("Item list. Page {}, size {}", page, size);
 
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Item> pageResult = itemRepository.findAll(pageRequest);
@@ -138,8 +138,8 @@ public class ItemService {
         // ignores the null fields
         modelMapper.getConfiguration().setSkipNullEnabled(true);
 
-        /* copies the values of the Client object (newInfo, any non-null field)
-        to the existingClient object. */
+        /* copies the values of the Item object (newInfo, any non-null field)
+        to the existingItem object. */
 
         modelMapper.map(newInfo, optionalItem);
 

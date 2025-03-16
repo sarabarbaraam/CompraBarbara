@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -54,7 +55,7 @@ public class ItemCreateDTO {
     @NotNull
     @DecimalMin(value = "0.01", message = "The price must be at least 0.01")
     @Column(name = "unit_price")
-    private float unitPrice;
+    private BigDecimal unitPrice;
 
     /**
      * The unitStock;

@@ -111,7 +111,7 @@ public class ClientController {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
 
-            List<ClientDTO> clientDTO = toClientDTOMapper(clientList);
+            List<ClientDTO> clientDTO = toClientDTOListMapper(clientList);
 
             logger.info("List of clients:");
             clientDTO.forEach(client -> logger.info("  - name: {}, surname: {}, company: {}",

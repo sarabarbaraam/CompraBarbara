@@ -65,7 +65,7 @@ public class ItemController {
                     createdItem.getDescription(), createdItem.getUnitPrice(), createdItem.getItemStock(),
                     createdItem.getType(), createdItem.getSupplier(), createdItem.getDate());
 
-            logger.info("Item client finished");
+            logger.info("Item finished");
 
             logger.info("Item created successfully: {}", createItemDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new CreateItemResponse(true, createItemDTO,
@@ -110,7 +110,7 @@ public class ItemController {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
 
-            List<ItemDTO> itemDTO = toItemDTOMapper(itemList);
+            List<ItemDTO> itemDTO = toItemDTOListMapper(itemList);
 
             logger.info("List of items:");
             itemDTO.forEach(item -> logger.info("  - name: {}, type: {}, stock: {}",

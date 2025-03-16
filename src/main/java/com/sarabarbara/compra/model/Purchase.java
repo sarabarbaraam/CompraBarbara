@@ -1,13 +1,15 @@
 package com.sarabarbara.compra.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -50,7 +52,7 @@ public class Purchase implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client", nullable = false)
-    private Client idClient;
+    private Client client;
 
     /**
      * The idItem;
@@ -58,22 +60,24 @@ public class Purchase implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_item", nullable = false)
-    private Item idItem;
+    private Item item;
 
     /**
      * The purchaseDate;
      */
 
     @NonNull
+    @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "purchase_date")
-    private Date purchaseDate;
+    private LocalDate purchaseDate;
 
     /**
-     * The quantity;
+     * The quantity
      */
 
     @NotNull
-    private int quantity;
+    private Integer quantity;
 
     /**
      * The total;
@@ -83,10 +87,10 @@ public class Purchase implements Serializable {
     private BigDecimal total;
 
     /**
-     * The iva;
+     * The iva
      */
 
-    @NonNull
+    @NotNull
     private BigDecimal iva;
 
     /**
@@ -116,10 +120,10 @@ public class Purchase implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Purchase purchase)) return false;
-        return getQuantity() == purchase.getQuantity()
+        return Objects.equals(getQuantity(), purchase.getQuantity())
                 && Objects.equals(getIdPurchase(), purchase.getIdPurchase())
-                && Objects.equals(getIdClient(), purchase.getIdClient())
-                && Objects.equals(getIdItem(), purchase.getIdItem())
+                && Objects.equals(getClient(), purchase.getClient())
+                && Objects.equals(getItem(), purchase.getItem())
                 && Objects.equals(getPurchaseDate(), purchase.getPurchaseDate())
                 && Objects.equals(getTotal(), purchase.getTotal())
                 && Objects.equals(getIva(), purchase.getIva())
@@ -135,7 +139,7 @@ public class Purchase implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdPurchase(), getIdClient(), getIdItem(), getPurchaseDate(), getQuantity(), getTotal(),
+        return Objects.hash(getIdPurchase(), getClient(), getItem(), getPurchaseDate(), getQuantity(), getTotal(),
                 getIva(), getTotalIva(), getTotalPrice());
     }
 
@@ -149,8 +153,8 @@ public class Purchase implements Serializable {
     public String toString() {
         return "Purchase{" +
                 "idPurchase=" + idPurchase +
-                ", idClient=" + idClient +
-                ", idItem=" + idItem +
+                ", idClient=" + client +
+                ", idItem=" + item +
                 ", purchaseDate=" + purchaseDate +
                 ", quantity=" + quantity +
                 ", total=" + total +

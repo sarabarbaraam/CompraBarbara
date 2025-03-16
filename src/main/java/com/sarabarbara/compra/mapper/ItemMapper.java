@@ -11,6 +11,7 @@ import com.sarabarbara.compra.sheets.ItemSheet;
 import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +34,20 @@ public class ItemMapper {
 
     }
 
+    public static ItemDTO toItemDTOMapper(@NotNull Item item) {
+
+        return ItemDTO.builder()
+                .idItem(item.getIdItem())
+                .name(item.getName())
+                .description(item.getDescription())
+                .unitPrice(item.getUnitPrice())
+                .itemStock(item.getItemStock())
+                .type(item.getType())
+                .supplier(item.getSupplier())
+                .date(item.getDate())
+                .build();
+    }
+
     /**
      * The Item to ItemCreateDTO mapper
      *
@@ -47,7 +62,7 @@ public class ItemMapper {
      * @return the ItemCreateDTO
      */
 
-    public static ItemCreateDTO toItemCreateDTOMapper(String name, String description, float unitPrice,
+    public static ItemCreateDTO toItemCreateDTOMapper(String name, String description, BigDecimal unitPrice,
                                                       int itemStock, Type type, String supplier,
                                                       LocalDate date) {
 
@@ -70,7 +85,7 @@ public class ItemMapper {
      * @return the ItemDTO
      */
 
-    public static List<ItemDTO> toItemDTOMapper(@NotNull List<Item> itemList) {
+    public static List<ItemDTO> toItemDTOListMapper(@NotNull List<Item> itemList) {
 
         return itemList.stream()
                 .map(item -> ItemDTO.builder()

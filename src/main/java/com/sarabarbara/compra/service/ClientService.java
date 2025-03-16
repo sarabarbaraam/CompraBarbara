@@ -219,5 +219,4 @@ public class ClientService {
         logger.info("The company {} is available", company);
     }
 
-
 }
